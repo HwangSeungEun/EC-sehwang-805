@@ -1,9 +1,11 @@
 #ifndef __EC_SYSTICK_H
 #define __EC_SYSTICK_H
 
-#include "stm32f4xx.h"
-#include "ecRCC.h"
-#include <stdint.h>
+//#include "stm32f4xx.h"
+//#include "ecRCC.h"
+//#include <stdint.h>
+
+#include "ecInclude.h"
 
 #ifdef __cplusplus
  extern "C" {

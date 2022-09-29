@@ -3,14 +3,17 @@
 @ Embedded Controller edit by Seung-Eun Hwang 
 Author           : SSS LAB
 Created          : 05-03-2021
-Modified         : 09-22-2022
+Modified         : 09-29-2022
 Language/ver     : C++ in Keil uVision
 
 Description      : Distributed to Students for LAB_GPIO
 /----------------------------------------------------------------*/
 
-#include "stm32f4xx.h"
-#include "ecRCC.h"
+//#include "stm32f4xx.h"
+//#include "ecRCC.h"
+
+#include "ecInclude.h"
+
 
 volatile int EC_SYSCLK=16000000;
 

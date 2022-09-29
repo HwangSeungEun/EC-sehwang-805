@@ -9,35 +9,33 @@ Language/ver     : C++ in Keil uVision
 Description      : Distributed to Students for LAB_GPIO
 /----------------------------------------------------------------*/
 
-#include "ecInclude.h"
-
-#ifndef __EC_RCC_H
-#define __EC_RCC_H
-
-#ifdef __cplusplus
- extern "C" {
-#endif /* __cplusplus */
+#ifndef __ECFUNC_H
+#define __ECFUNC_H
 
 //#include "stm32f411xe.h"
+//#include "ecRCC.h"
+//#include "ecGPIO.h"
 
-void RCC_HSI_init(void);
-void RCC_PLL_init(void);
+#include "ecInclude.h"
 
-void RCC_GPIOA_enable(void);
-void RCC_GPIOB_enable(void);
-void RCC_GPIOC_enable(void);
-void RCC_GPIOD_enable(void);
-void RCC_GPIOE_enable(void);
+#define PA5 		5
+#define PA6 		6
+#define PA7 		7
+#define PB6 		6
+#define PC7 		7
+#define PA9 		9
+#define PA8 		8
+#define PB10 		10
 
-/*
-void RCC_GPIOF_enable(void);
-void RCC_GPIOG_enable(void);
-void RCC_GPIOH_enable(void);
-*/
+#define BUTTON_PIN 13
 
-// void RCC_GPIO_enable(GPIO_TypeDef * GPIOx);
+// bitwiser
+void bitToggle(GPIO_TypeDef* Port, int pin);
 
-extern int EC_SYSCL;
+// seven segment
+void Seven_Segment_init(void);
+void Seven_segment_decoder(int flag);
+
 
 #ifdef __cplusplus
 }

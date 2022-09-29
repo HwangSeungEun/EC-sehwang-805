@@ -3,7 +3,7 @@
 @ Embedded Controller edit by Seung-Eun Hwang 
 Author           : SSS LAB
 Created          : 05-03-2021
-Modified         : 09-27-2022
+Modified         : 09-29-2022
 Language/ver     : C++ in Keil uVision
 
 Description      : Distributed to Students for LAB_GPIO
@@ -11,10 +11,11 @@ Description      : Distributed to Students for LAB_GPIO
 
 
 
-#include "stm32f4xx.h"
-#include "stm32f411xe.h"
-#include "ecGPIO.h"
+//#include "stm32f4xx.h"
+//#include "stm32f411xe.h"
+//#include "ecGPIO.h"
 
+#include "ecInclude.h"
 
 void GPIO_init(GPIO_TypeDef *Port, int pin, int mode){     
 	// mode  : Input(0), Output(1), AlterFunc(2), Analog(3)   
@@ -92,8 +93,5 @@ void GPIO_write(GPIO_TypeDef *Port, int pin,  int output){
 }
 
 
-void bitToggle ( GPIO_TypeDef *Port, int pin){
-	
-	Port -> ODR ^= (1 << pin);
-	
-}
+
+
