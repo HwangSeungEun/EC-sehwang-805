@@ -1,10 +1,9 @@
 /*----------------------------------------------------------------\
 @ Embedded Controller by Young-Keun Kim - Handong Global University
-@ Embedded Controller edit by Seung-Eun Hwang 
-Author           : SSS LAB
+Author           : Seung-Eun Hwang 
 Created          : 05-03-2021
-Modified         : 09-29-2022
-Language/ver     : C++ in Keil uVision
+Modified         : 10-15-2022
+Language/ver     : C in Keil uVision
 
 Description      : Embedded Controller function 
 /----------------------------------------------------------------*/
@@ -20,68 +19,31 @@ Description      : Embedded Controller function
 
 
 
-void Seven_Segment_init(void) {
+//sevensegment_decoder
+
+void sevensegment_init(void) {
 
 	// led a setup
-	GPIO_init(GPIOA, PA8, OUTPUT);		// calls RCC_GPIOA_enable()
-	GPIO_otype(GPIOA, PA8, PUSHPULL);	// LED open drain
-	GPIO_pupd(GPIOA, PA8, NOPUPD);		// LED NOPUPD 
-	GPIO_ospeed(GPIOA, PA8, MSPEED);		// LED Medium speed
-	GPIO_write(GPIOA, PA8, LOW); 		// claer LED	
-
+	GPIO_out_set(GPIOA, PA8, NOPUPD, MSPEED, PUSHPULL);
 	// led b setup
-	GPIO_init(GPIOB, PB10, OUTPUT);		// calls RCC_GPIOA_enable()
-	GPIO_otype(GPIOB, PB10, PUSHPULL);	// LED open drain
-	GPIO_pupd(GPIOB, PB10, NOPUPD);		// LED NOPUPD 
-	GPIO_ospeed(GPIOB, PB10, MSPEED);		// LED Medium speed
-	GPIO_write(GPIOB, PB10, LOW); 		// claer LED
-
-	// led c setup
-	GPIO_init(GPIOA, PA7, OUTPUT);		// calls RCC_GPIOA_enable()
-	GPIO_otype(GPIOA, PA7, PUSHPULL);	// LED open drain
-	GPIO_pupd(GPIOA, PA7, NOPUPD);		// LED NOPUPD 
-	GPIO_ospeed(GPIOA, PA7, MSPEED);		// LED Medium speed
-	GPIO_write(GPIOA, PA7, LOW); 		// claer LED	
-
+	GPIO_out_set(GPIOB, PB10, NOPUPD, MSPEED, PUSHPULL);
+  // led c setup
+	GPIO_out_set(GPIOA, PA7, NOPUPD, MSPEED, PUSHPULL);									
 	// led d setup
-	GPIO_init(GPIOA, PA6, OUTPUT);		// calls RCC_GPIOA_enable()
-	GPIO_otype(GPIOA, PA6, PUSHPULL);	// LED open drain
-	GPIO_pupd(GPIOA, PA6, NOPUPD);		// LED NOPUPD 
-	GPIO_ospeed(GPIOA, PA6, MSPEED);		// LED Medium speed
-	GPIO_write(GPIOA, PA6, LOW); 		// claer LED	
-
+	GPIO_out_set(GPIOA, PA6, NOPUPD, MSPEED, PUSHPULL);
 	// led e setup
-	GPIO_init(GPIOA, PA5, OUTPUT);		// calls RCC_GPIOA_enable()
-	GPIO_otype(GPIOA, PA5, PUSHPULL);	// LED open drain
-	GPIO_pupd(GPIOA, PA5, NOPUPD);		// LED NOPUPD 
-	GPIO_ospeed(GPIOA, PA5, MSPEED);		// LED Medium speed
-	GPIO_write(GPIOA, PA5, LOW); 		// claer LED
-
+	GPIO_out_set(GPIOA, PA5, NOPUPD, MSPEED, PUSHPULL);
 	// led f setup
-	GPIO_init(GPIOA, PA9, OUTPUT);		// calls RCC_GPIOA_enable()
-	GPIO_otype(GPIOA, PA9, PUSHPULL);	// LED open drain
-	GPIO_pupd(GPIOA, PA9, NOPUPD);		// LED NOPUPD 
-	GPIO_ospeed(GPIOA, PA9, MSPEED);		// LED Medium speed
-	GPIO_write(GPIOA, PA9, LOW); 		// claer LED	
-
+	GPIO_out_set(GPIOA, PA9, NOPUPD, MSPEED, PUSHPULL);
 	// led g setup
-	GPIO_init(GPIOC, PC7, OUTPUT);		// calls RCC_GPIOA_enable()
-	GPIO_otype(GPIOC, PC7, PUSHPULL);	// LED open drain
-	GPIO_pupd(GPIOC, PC7, NOPUPD);		// LED NOPUPD 
-	GPIO_ospeed(GPIOC, PC7, MSPEED);		// LED Medium speed
-	GPIO_write(GPIOC, PC7, HIGH); 		// claer LED
-
+	GPIO_out_set(GPIOC, PC7, NOPUPD, MSPEED, PUSHPULL);
 	// led DP setup
-	GPIO_init(GPIOB, PB6, OUTPUT);		// calls RCC_GPIOA_enable()
-	GPIO_otype(GPIOB, PB6, PUSHPULL);	// LED open drain
-	GPIO_pupd(GPIOB, PB6, NOPUPD);		// LED NOPUPD 
-	GPIO_ospeed(GPIOB, PB6, MSPEED);		// LED Medium speed
-	GPIO_write(GPIOB, PB6, HIGH); 		// claer LED
-
+	GPIO_out_set(GPIOB, PB6, NOPUPD, MSPEED, PUSHPULL);	
+	
 }
 
 
-void Seven_segment_decoder(int flag) {
+void sevensegment_decoder(uint8_t flag) {
 
 	int seven_segment[11][8] = {
 				{LOW,	LOW,	LOW,	LOW,	LOW,	LOW,	HIGH,	HIGH},          //zero
@@ -108,7 +70,6 @@ void Seven_segment_decoder(int flag) {
 	GPIO_write(GPIOB, PB6, seven_segment[flag][7]); 		// dp
 
 
-
 }
 
 
@@ -117,3 +78,26 @@ void bitToggle(GPIO_TypeDef* Port, int pin) {
 	Port->ODR ^= (1 << pin);
 
 }
+
+void LED_toggle(void){
+	
+	GPIOA->ODR ^= (1 << 5);
+	
+}
+
+void LED4_toggle(uint8_t flag){ 	// use truth table of 4 leds circuit
+		
+	int led4[4][4] = { 
+		{HIGH,	LOW,		LOW,		LOW},
+		{LOW,		HIGH,		LOW,		LOW},
+		{LOW,		LOW,		HIGH,		LOW},
+		{LOW,		LOW,		LOW,  	HIGH}};
+	
+		GPIO_write(GPIOA, PA5, led4[flag][0]); 		// PA5
+		GPIO_write(GPIOA, PA6, led4[flag][1]); 		// PA6
+		GPIO_write(GPIOA, PA7, led4[flag][2]); 		// PA7
+		GPIO_write(GPIOB, PB6, led4[flag][3]); 		// PB6d
+		
+}
+
+

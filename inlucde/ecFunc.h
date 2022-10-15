@@ -33,12 +33,14 @@ Description      : Distributed to Students for LAB_GPIO
 void bitToggle(GPIO_TypeDef* Port, int pin);
 
 // seven segment
-void Seven_Segment_init(void);
-void Seven_segment_decoder(int flag);
+void sevensegment_init(void);
+void sevensegment_decoder(uint8_t flag);
+void LED_toggle(void);
 
+void LED4_toggle(uint8_t flag);
 
 #ifdef __cplusplus
-}
+
 #endif /* __cplusplus */
 
 #endif

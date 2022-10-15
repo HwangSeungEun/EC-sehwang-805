@@ -1,37 +1,46 @@
-#include "ecSysTick.h"
+/**
+******************************************************************************
+* @author  2022-10-15 by Seung-Eun Hwang  	
+* @brief   Embedded Controller:  SysTick Interrupt library
+* 
+******************************************************************************
+*/
+#include "ecInclude.h"
 
-
-
+              
 #define MCU_CLK_PLL 84000000
 #define MCU_CLK_HSI 16000000
 
-volatile uint32_t msTicks;
 
-//EC_SYSTEM_CLK
+volatile uint32_t TimeDelay;
 
-void SysTick_init(void){	
+
+// msec는 reload 값의 max를 정해줌으로써 전체 period의 시간을 정할 수 있는거다
+void SysTick_init(uint32_t msec){	
+
 	//  SysTick Control and Status Register
-	SysTick->CTRL = 0;											// Disable SysTick IRQ and SysTick Counter
+	// Disable SysTick IRQ and SysTick Counter
+	SysTick_disable();								
 
 	// Select processor clock
 	// 1 = processor clock;  0 = external clock
 	SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;
 
-	// uint32_t MCU_CLK=EC_SYSTEM_CLK
 	// SysTick Reload Value Register
-	SysTick->LOAD = 84000000 / 1000 - 1;						// 1ms, for HSI PLL = 84MHz.
-
+	SysTick->LOAD = (MCU_CLK_PLL / (1000)) * msec - 1;						// 1ms, for HSI PLL = 84MHz.
+	
 	// SysTick Current Value Register
-	SysTick->VAL = 0;
+	SysTick_reset();
 
-	// Enables SysTick exception request
+	// Enables SysTick exception request " 이거 이해가 잘 안간다"
+	// 0 = Counting down to zero does not assert the SysTick exception request
 	// 1 = counting down to zero asserts the SysTick exception request
 	SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
-	
-	// Enable SysTick IRQ and SysTick Timer
-	SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
 		
-	NVIC_SetPriority(SysTick_IRQn, 16);		// Set Priority to 1
+	// Enable SysTick IRQ and SysTick Timer
+	SysTick_enable();
+		
+	NVIC_SetPriority(SysTick_IRQn, 16);		// Set Priority to 16
 	NVIC_EnableIRQ(SysTick_IRQn);			// Enable interrupt in NVIC
 }
 
@@ -42,39 +51,30 @@ void SysTick_Handler(void){
 }
 
 void SysTick_counter(void){
-	msTicks++;
+	TimeDelay--;
 }	
 
 
-void delay_ms (uint32_t mesc){
+void Delay (uint32_t nTime){
 	
-  uint32_t curTicks;
-
-  curTicks = msTicks;
-  while ((msTicks - curTicks) < mesc);
-	
-	msTicks = 0;
+	TimeDelay = nTime; //setup 
+	while(TimeDelay != 0);	
 }
 
-//void delay_ms(uint32_t msec){
-//	uint32_t now=SysTick_val(); 
-//	if (msec>5000) msec=5000;
-//	if (msec<1) msec=1;
-//	while ((now - SysTick_val()) < msec);
-//}
-
-
-void SysTick_reset(void)
-{
-	// SysTick Current Value Register
-	SysTick->VAL = 0;
+	// SysTick -> VAL에서 VAL이 0이 되면 feedback loop에서 reload 값으로 다시 돌아간다
+	// SysTick을 초기화시키는 방식 -> 다운 클락이기 때문에 가능한 방법이고 
+void SysTick_reset(void)  {
+	SysTick->VAL = 0;			// if VAL is 0, VAL will update Reroad value
 }
 
-uint32_t SysTick_val(void) {
+uint32_t SysTick_val(void) {	// check the current VAL value
 	return SysTick->VAL;
 }
 
-//void SysTick_counter(){
-//	msTicks++;
-//	if(msTicks%1000 == 0) count++;
-//}	
+void SysTick_enable(void){		
+	SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;		
+}
+
+void SysTick_disable(void){
+	SysTick->CTRL = 0;	
+}

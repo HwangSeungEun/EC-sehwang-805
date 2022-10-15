@@ -3,7 +3,7 @@
 @ Embedded Controller edit by Seung-Eun Hwang 
 Author           : SSS LAB
 Created          : 05-03-2021
-Modified         : 09-29-2022
+Modified         : 10-14-2022
 Language/ver     : C++ in Keil uVision
 
 Description      : Distributed to Students for LAB_GPIO
@@ -50,6 +50,10 @@ Description      : Distributed to Students for LAB_GPIO
 #endif /* __cplusplus */
 	 
 void setup(void);	 
+	 
+	 
+void GPIO_in_set(GPIO_TypeDef *Port, int pin, int pupd);	 
+void GPIO_out_set(GPIO_TypeDef *Port, int pin, int pupd, int speed, int type);	 
 	 
 void GPIO_init(GPIO_TypeDef *Port, int pin, int mode);
 void GPIO_write(GPIO_TypeDef *Port, int pin, int Output);

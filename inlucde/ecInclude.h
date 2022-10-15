@@ -18,11 +18,16 @@ Description      : Distributed to Students for LAB_GPIO
 #include "ecGPIO.h"
 #include "ecSysTick.h"
 #include "ecFunc.h"
+#include "ecEXTI.h"
+#include "ecTIM.h"
+
+
+//#include "ecGPIO_API.h"
 
 
 
 #ifdef __cplusplus
-}
+
 #endif /* __cplusplus */
 
 #endif
