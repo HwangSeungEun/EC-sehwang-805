@@ -1,4 +1,6 @@
-# Embedded Controller
+# Embedded Controller 
+
+
 
 **Date:** 2022-10-15
 
@@ -6,11 +8,96 @@
 
 **Github:** [repository link](https://github.com/HwangSeungEun/EC-sehwang-805)
 
+**Program:** C/C++
+
+**IDE/Compiler:** Keil uVision 5
+
+**OS:** WIn10
+
+**MCU:**  STM32F411RE (Nucleo-64)
+
+
+
+## Contents
+
+[TOC]
+
+
+
 
 
 
 
 여기에는 작동하는 원리를 적는다
+
+
+
+
+
+## Bitwise
+
+**a**: array of register, **k**: bit number
+
+- **write a (high) bit:** a|= (1 << k)
+- **write two bits:** a |= (3 << k)
+- **read one bit:** val = (a >> k) & 1
+- **read 2 bits**: val = (a >> k) & 3   [0011]  
+- **clear bit:** a &= ~(1 << k)
+- **Toggle:** a^= 1 << k  (^= is XOR)
+
+
+
+## RCC
+
+### RCC Register Table
+
+![image](https://user-images.githubusercontent.com/91474647/196450014-04dcd463-094c-4ee4-9f39-67d408a85347.png)
+
+
+
+
+
+### Internal Clock (HSI) for GPIO
+
+1. **Enable HSI and choose as SYSCLK source**
+   - Enable HSI: **(RCC->CR: HSION=1)** 
+   - Wait until HSI is stable and ready: **(RCC->CR: HSIRDY? 1)** 
+   - Choose the system clock switch : **(RCC->CFGR: SW = 00)** 
+   - Check if the selected source is correct: **(RCC->CFGR: SWS ? 00)**
+
+2. Configure HSI (optional) 
+   - Calibration for RC oscillator: (RCC->CR: HSICAL, HSITRIM) 
+3. Configure APB/AHB Prescaler (optional) 
+   - Change Prescaler: RCC->CFGR: HPRE, PPRE
+
+4. **Enable GPIOx clock(AHB1ENR )** 
+   - Enable (RCC_AHB1ENR) for PORTx
+
+
+
+```c
+void RCC_HSI_init() {
+	// Enable High Speed Internal Clock (HSI = 16 MHz)
+  	//RCC->CR |= ((uint32_t)RCC_CR_HSION);
+	//	RCC->CR |= RCC_CR_HSION; 
+	RCC->CR |= 0x00000001U;
+	
+  	// wait until HSI is ready
+  	//while ( (RCC->CR & (uint32_t) RCC_CR_HSIRDY) == 0 ) {;}
+	while ( (RCC->CR & 0x00000002U) == 0 ) {;}
+	
+  	// Select HSI as system clock source 
+  	RCC->CFGR &= (uint32_t)(~RCC_CFGR_SW); 			// not essential
+  	RCC->CFGR |= (uint32_t)RCC_CFGR_SW_HSI; 		//00: HSI16 oscillator used as system clock
+
+	// Wait till HSI is used as system clock source
+  	while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != 0 );
+
+		EC_SYSCLK=16000000;
+}
+```
+
+
 
 
 
