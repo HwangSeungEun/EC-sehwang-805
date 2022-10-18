@@ -22,18 +22,6 @@
 
 [TOC]
 
-
-
-
-
-
-
-여기에는 작동하는 원리를 적는다
-
-
-
-
-
 ## Bitwise
 
 **a**: array of register, **k**: bit number
@@ -51,7 +39,7 @@
 
 ### RCC Register Table
 
-![image](https://user-images.githubusercontent.com/91474647/196450014-04dcd463-094c-4ee4-9f39-67d408a85347.png)
+<img src="https://user-images.githubusercontent.com/91474647/196450766-c82cc63d-af8e-4715-8a14-d349b08bdc06.png" alt="image" style="zoom:33%;" />
 
 
 
