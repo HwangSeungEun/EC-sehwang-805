@@ -30,7 +30,7 @@ void EXTI_init(GPIO_TypeDef *Port, int Pin, int trig_type, int priority){
 	// Configure Trigger edge
 	if 			(trig_type == FALL) EXTI->FTSR |= (1UL << Pin);   // Falling trigger enable 
 	else if	(trig_type == RISE) EXTI->RTSR |= (1UL << Pin);   // Rising trigger enable 
-	else if	(trig_type == BOTH) {			// Both falling/rising trigger enable // 같은 pin에서 rising falling이 가능한가??
+	else if	(trig_type == BOTH) {			// Both falling/rising trigger enable 
 		EXTI->RTSR |= (1UL << Pin); 
 		EXTI->FTSR |= (1UL << Pin);
 	} 

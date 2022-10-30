@@ -17,8 +17,7 @@ Description      : Distributed to Students for LAB_GPIO
 
 #include "ecInclude.h"
 
-void GPIO_init(GPIO_TypeDef *Port, int pin, int mode){     
-	// mode  : Input(0), Output(1), AlterFunc(2), Analog(3)   
+void GPIO_init(GPIO_TypeDef *Port, int pin, int mode){        
 	if (Port == GPIOA)
 		RCC_GPIOA_enable();
 	
@@ -48,11 +47,10 @@ void GPIO_mode(GPIO_TypeDef *Port, int pin, int mode){
 
 
 // GPIO Speed          : Low speed (00), Medium speed (01), Fast speed (10), High speed (11)
-void GPIO_ospeed(GPIO_TypeDef *Port, int pin, int speed){
+void GPIO_ospeed(GPIO_TypeDef *Port, int pin, int speed) {
 	
 		Port->OSPEEDR &= ~(3UL 	<< (pin * 2));
 		Port->OSPEEDR |=  speed << (pin * 2);	
-	
 }
 
 // GPIO Output Type: Output push-pull (0, reset), Output open drain (1)
@@ -64,16 +62,13 @@ void GPIO_otype(GPIO_TypeDef *Port, int pin, int type){
 
 // GPIO Push-Pull    : No pull-up, pull-down (00), Pull-up (01), Pull-down (10), Reserved (11)
 void GPIO_pupd(GPIO_TypeDef *Port, int pin, int pupd){
-	
 		Port->PUPDR  &= 	~(3UL << (pin * 2));			
 		Port->PUPDR  |= 	(pupd	<< (pin * 2));			
-	
 }
 
 
 
-int GPIO_read(GPIO_TypeDef *Port, int pin){
-  
+int GPIO_read(GPIO_TypeDef *Port, int pin){ 
 	// 0 or 1만 읽기 위해서 사용하는 방법
 	return ((Port -> IDR) >> pin) & 1UL;
 	
@@ -88,30 +83,38 @@ void GPIO_write(GPIO_TypeDef *Port, int pin,  int output){
 			else
 				
 				Port->ODR &= ~(1UL << pin); 
+			
+			
+			// 	Port->ODR &= ~(1UL << pin);		// clear
+			//	Port->ODR |= (output << pin);	// set
 	
 }
 
 // GPIO input setting
 // set port, pin number, pull up pull down
-void GPIO_in_set(GPIO_TypeDef *Port, int pin, int pupd){
-	
+void GPIO_in_set(GPIO_TypeDef *Port, int pin, int pupd){	
 	GPIO_init(Port, pin, INPUT);
 	GPIO_pupd(Port, pin, pupd);
-	
-	
 }
 	
 
 // GPIO output setting
 // set port, pin number, pull up pull down, speed, pushpull
-void GPIO_out_set(GPIO_TypeDef *Port, int pin, int pupd, int speed, int type){
-	
+void GPIO_out_set(GPIO_TypeDef *Port, int pin, int pupd, int speed, int type){	
 	GPIO_init		(Port, pin, OUTPUT);			
 	GPIO_otype		(Port, pin, type);			
 	GPIO_pupd		(Port, pin, pupd);				
 	GPIO_ospeed		(Port, pin, speed);			
 	GPIO_write		(Port, pin, LOW); 			
-	
+}
+
+
+void GPIO_AF_set(GPIO_TypeDef *Port, int pin, int pupd, int speed, int type){	
+	GPIO_init		(Port, pin, AF);			
+	GPIO_otype		(Port, pin, type);			
+	GPIO_pupd		(Port, pin, pupd);				
+	GPIO_ospeed		(Port, pin, speed);			
+	GPIO_write		(Port, pin, LOW); 			
 }
 	 
 

@@ -22,12 +22,16 @@
 
 [TOC]
 
+## **STM 32 Circuit**
+
+![stm32](https://user-images.githubusercontent.com/91474647/196760439-ef17cb83-ba8d-4fd5-ba03-2d9ee3df5ffb.jpg)
+
 ## **Bitwise**
 
 **a**: array of register, **k**: bit number
 
 - **write a (high) bit:** a|= (1 << k)
-- **write two bits:** a |= (3 << k)
+- **write two bits:** a |= (3 << k)   
 - **read one bit:** val = (a >> k) & 1
 - **read 2 bits**: val = (a >> k) & 3   [0011]  
 - **clear bit:** a &= ~(1 << k)

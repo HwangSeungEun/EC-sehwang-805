@@ -9,7 +9,8 @@
 
 #ifndef __EC_TIM_H 
 #define __EC_TIM_H
-#include "stm32f411xe.h"
+
+#include "ecInclude.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -24,9 +25,12 @@ void TIM_period_ms(TIM_TypeDef* TIMx, uint32_t msec);
 void TIM_INT_init(TIM_TypeDef* TIMx, uint32_t msec); 
 void TIM_INT_enable(TIM_TypeDef* TIMx);
 void TIM_INT_disable(TIM_TypeDef* TIMx);
+void reset_TIMER(TIM_TypeDef *TIMx);
 
-uint32_t is_UIF(TIM_TypeDef *TIMx);
-void clear_UIF(TIM_TypeDef *TIMx);
+
+uint32_t is_pending_TIM(TIM_TypeDef *TIMx);
+void clear_pending_TIM(TIM_TypeDef *TIMx);
+
 
 
 #ifdef __cplusplus

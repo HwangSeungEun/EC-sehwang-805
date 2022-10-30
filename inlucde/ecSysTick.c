@@ -7,9 +7,6 @@
 */
 #include "ecInclude.h"
 
-              
-#define MCU_CLK_PLL 84000000
-#define MCU_CLK_HSI 16000000
 
 
 volatile uint32_t TimeDelay;
@@ -55,7 +52,7 @@ void SysTick_counter(void){
 }	
 
 
-void Delay (uint32_t nTime){
+void delay_ms (uint32_t nTime){
 	
 	TimeDelay = nTime; //setup 
 	while(TimeDelay != 0);	

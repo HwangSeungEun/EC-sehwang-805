@@ -22,7 +22,7 @@
 void SysTick_init(uint32_t msec);
 void SysTick_Handler(void);
 void SysTick_counter(void);
-void Delay (uint32_t nTime);
+void delay_ms (uint32_t nTime);
 void SysTick_reset(void);
 uint32_t SysTick_val(void);
 

@@ -18,7 +18,11 @@ Description      : Distributed to Students for LAB_GPIO
 
 #include "ecInclude.h"
 
+//Systick LED
 #define PA5 		5
+
+// 7segment
+#define PB9 		9
 #define PA6 		6
 #define PA7 		7
 #define PB6 		6
@@ -26,6 +30,14 @@ Description      : Distributed to Students for LAB_GPIO
 #define PA9 		9
 #define PA8 		8
 #define PB10 		10
+
+
+
+// 4LED
+#define PB4			4
+#define PB5			5
+#define PB3			3
+#define PA10		10
 
 #define BUTTON_PIN 13
 
@@ -37,7 +49,11 @@ void sevensegment_init(void);
 void sevensegment_decoder(uint8_t flag);
 void LED_toggle(void);
 
-void LED4_toggle(uint8_t flag);
+
+
+void LED_4_decoder(uint8_t flag);
+void LED_4_init(void);
+
 
 #ifdef __cplusplus
 

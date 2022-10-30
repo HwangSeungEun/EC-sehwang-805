@@ -1,12 +1,11 @@
 /*----------------------------------------------------------------\
-@ Embedded Controller by Young-Keun Kim - Handong Global University
 @ Embedded Controller edit by Seung-Eun Hwang 
-Author           : SSS LAB
-Created          : 05-03-2021
-Modified         : 09-27-2022
+Author           : SeungEun Hwang
+Created          : 09-13-2022
+Modified         : 10-17-2022
 Language/ver     : C++ in Keil uVision
 
-Description      : Distributed to Students for LAB_GPIO
+Description      : ecInclude header file
 /----------------------------------------------------------------*/
 
 #ifndef __ECINCLUDE_H
@@ -20,6 +19,13 @@ Description      : Distributed to Students for LAB_GPIO
 #include "ecFunc.h"
 #include "ecEXTI.h"
 #include "ecTIM.h"
+#include "ecPWM.h"
+#include "ecStepper.h"
+
+#define MCU_CLK_PLL 84000000
+#define MCU_CLK_HSI 16000000
+#define MCU_CLK_HSE 8000000
+
 
 
 //#include "ecGPIO_API.h"

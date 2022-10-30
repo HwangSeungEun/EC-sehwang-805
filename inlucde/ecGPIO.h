@@ -54,7 +54,9 @@ void setup(void);
 	 
 void GPIO_in_set(GPIO_TypeDef *Port, int pin, int pupd);	 
 void GPIO_out_set(GPIO_TypeDef *Port, int pin, int pupd, int speed, int type);	 
-	 
+void GPIO_AF_set(GPIO_TypeDef *Port, int pin, int pupd, int speed, int type);
+
+
 void GPIO_init(GPIO_TypeDef *Port, int pin, int mode);
 void GPIO_write(GPIO_TypeDef *Port, int pin, int Output);
 int  GPIO_read(GPIO_TypeDef *Port, int pin);
