@@ -20,7 +20,7 @@
 
 ## **Contents**
 
-[TOC]
+[toc]
 
 ## **STM 32 Circuit**
 
