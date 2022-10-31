@@ -17,8 +17,15 @@ Description      : HAL library ecStepper
 
 //State mode
 #define HALF 0
-#define FULL 1	 
+#define FULL 1	
 
+#define HALFSTEP 4096
+#define FULLSTEP 2048	
+
+#define GEAR_RATIO  32
+#define FULL_REV  	64
+#define HALF_REV  	128
+ 
 //State number 
 #define S0 0
 #define S1 1
@@ -30,8 +37,8 @@ Description      : HAL library ecStepper
 #define S7 7
 
 // direction 
-#define dri0 0 // 얘네 cw ccw 정해주기
-#define dri1 1
+#define CW 0 // 얘네 cw ccw 정해주기
+#define CCW 1
 
 //pin number
 #define	 	PB10 	10
@@ -57,9 +64,10 @@ typedef struct{
 
 	 
 void Stepper_init(GPIO_TypeDef* port1, int pin1, GPIO_TypeDef* port2, int pin2, GPIO_TypeDef* port3, int pin3, GPIO_TypeDef* port4, int pin4);
-void Stepper_setSpeed(long whatSpeed);
+void Stepper_setSpeed (long whatSpeed, int mode);
 void Stepper_pinOut (uint32_t state, int mode);
-void Stepper_step(int steps, int dir, int mode);
+void Stepper_step(int steps, int dir, int mode, long rpm);
+
 void Stepper_stop(void);
 
 #ifdef __cplusplus

@@ -11,6 +11,9 @@ Description      : ecInclude header file
 #ifndef __ECINCLUDE_H
 #define __ECINCLUDE_H
 
+#include <stdio.h>
+#include <math.h>
+
 #include "stm32f4xx.h"
 #include "stm32f411xe.h"
 #include "ecRCC.h"
@@ -21,6 +24,8 @@ Description      : ecInclude header file
 #include "ecTIM.h"
 #include "ecPWM.h"
 #include "ecStepper.h"
+#include "ecUART.h"
+
 
 #define MCU_CLK_PLL 84000000
 #define MCU_CLK_HSI 16000000

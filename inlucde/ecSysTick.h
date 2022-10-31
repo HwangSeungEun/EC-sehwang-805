@@ -19,7 +19,8 @@
  extern "C" {
 #endif /* __cplusplus */
 
-void SysTick_init(uint32_t msec);
+void SysTick_ms_init(uint32_t msec);
+void SysTick_us_init(uint32_t usec);
 void SysTick_Handler(void);
 void SysTick_counter(void);
 void delay_ms (uint32_t nTime);

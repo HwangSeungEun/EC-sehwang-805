@@ -13,7 +13,7 @@ volatile uint32_t TimeDelay;
 
 
 // msec는 reload 값의 max를 정해줌으로써 전체 period의 시간을 정할 수 있는거다
-void SysTick_init(uint32_t msec){	
+void SysTick_ms_init(uint32_t msec){	
 
 	//  SysTick Control and Status Register
 	// Disable SysTick IRQ and SysTick Counter
@@ -40,6 +40,37 @@ void SysTick_init(uint32_t msec){
 	NVIC_SetPriority(SysTick_IRQn, 16);		// Set Priority to 16
 	NVIC_EnableIRQ(SysTick_IRQn);			// Enable interrupt in NVIC
 }
+
+
+void SysTick_us_init(uint32_t usec){	
+
+	//  SysTick Control and Status Register
+	// Disable SysTick IRQ and SysTick Counter
+	SysTick_disable();								
+
+	// Select processor clock
+	// 1 = processor clock;  0 = external clock
+	SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;
+
+	// SysTick Reload Value Register
+	SysTick->LOAD = (MCU_CLK_PLL / (1000000)) * usec - 1;						// 1ms, for HSI PLL = 84MHz.
+	
+	// SysTick Current Value Register
+	SysTick_reset();
+
+	// Enables SysTick exception request " 이거 이해가 잘 안간다"
+	// 0 = Counting down to zero does not assert the SysTick exception request
+	// 1 = counting down to zero asserts the SysTick exception request
+	SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
+		
+	// Enable SysTick IRQ and SysTick Timer
+	SysTick_enable();
+		
+	NVIC_SetPriority(SysTick_IRQn, 16);		// Set Priority to 16
+	NVIC_EnableIRQ(SysTick_IRQn);			// Enable interrupt in NVIC
+}
+
+
 
 
 
