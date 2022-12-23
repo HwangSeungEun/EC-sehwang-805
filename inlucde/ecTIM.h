@@ -7,10 +7,12 @@
 ******************************************************************************
 */
 
+#include "ecInclude.h"
+
 #ifndef __EC_TIM_H 
 #define __EC_TIM_H
 
-#include "ecInclude.h"
+
 
 #ifdef __cplusplus
  extern "C" {
@@ -28,8 +30,8 @@ void TIM_INT_disable(TIM_TypeDef* TIMx);
 void reset_TIMER(TIM_TypeDef *TIMx);
 
 
-uint32_t is_pending_TIM(TIM_TypeDef *TIMx);
-void clear_pending_TIM(TIM_TypeDef *TIMx);
+uint32_t is_UIF(TIM_TypeDef *TIMx);
+void clear_UIF(TIM_TypeDef *TIMx);
 
 
 

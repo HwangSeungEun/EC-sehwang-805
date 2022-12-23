@@ -10,9 +10,52 @@
 
 #include "ecInclude.h"
 
-/* PWM Configuration */
 
-void PWM_init(PWM_t *pwm, GPIO_TypeDef *port, int pin, int speed ,int dir, uint32_t msec){
+uint32_t is_TIM_ENA(PWM_t *pwm, GPIO_TypeDef *port, int pin){
+		// TIM, pin setting
+	pwm->port = port;
+	pwm->pin  = pin;
+	PWM_pinmap(pwm);
+	TIM_TypeDef* TIMx = pwm->timer;
+	int CHn = pwm->ch;
+	
+	return TIMx->DIER & TIM_DIER_UIE;
+}
+
+
+/* PWM Configuration */
+void PWM_disable(PWM_t *pwm, GPIO_TypeDef *port, int pin){
+	
+	// TIM, pin setting
+	pwm->port = port;
+	pwm->pin  = pin;
+	PWM_pinmap(pwm);
+	TIM_TypeDef* TIMx = pwm->timer;
+	int CHn = pwm->ch;
+	
+	TIMx->CR1 &= ~TIM_CR1_CEN;	// disable counter
+	
+}
+
+
+void PWM_enable(PWM_t *pwm, GPIO_TypeDef *port, int pin){
+	
+	// TIM, pin setting
+	pwm->port = port;
+	pwm->pin  = pin;
+	PWM_pinmap(pwm);
+	TIM_TypeDef* TIMx = pwm->timer;
+	int CHn = pwm->ch;
+	
+	TIMx->CR1 |= TIM_CR1_CEN; // Enable counter
+	
+}
+
+
+
+
+
+void PWM_init(PWM_t *pwm, GPIO_TypeDef *port, int pin, int pupd, int speed, int type ,int dir, uint32_t msec){
 // 0. Match Output Port and Pin for TIMx 	
 		pwm->port = port;
 		pwm->pin  = pin;
@@ -25,16 +68,16 @@ void PWM_init(PWM_t *pwm, GPIO_TypeDef *port, int pin, int speed ,int dir, uint3
 	/*	
 				TIM	Ch 	Por	pin
 				1		1		A		8
-				1		1n	A		7
-				1		1n	B		13
+				1		1N	A		7
+				1		1N	B		13
 						
 				1		2		A		9
-				1		2n	B		0
-				1		2n	B		14
+				1		2N	B		0
+				1		2N	B		14
 						
 				1		3		A		10
-				1		3n	B		11
-				1		3n	B		15
+				1		3N	B		1
+				1		3N	B		15
 
 				2		1		A		0
 				2		1		A		5
@@ -52,6 +95,8 @@ void PWM_init(PWM_t *pwm, GPIO_TypeDef *port, int pin, int speed ,int dir, uint3
 				3		2		B		5
 				3		2		C		7
 				
+				3		3		C		8
+				
 				3		4		C		9
 
 				4		1		B		6
@@ -66,7 +111,7 @@ void PWM_init(PWM_t *pwm, GPIO_TypeDef *port, int pin, int speed ,int dir, uint3
 
 
 // 1. Initialize GPIO port and pin as AF
-	GPIO_AF_set(port, pin, PULLUP, speed, PUSHPULL);
+	GPIO_AF_set(port, pin, pupd, speed, type);
 	
 // 2. Configure GPIO AFR by Pin num.		
 	// pwm 채널에 따른 일반화 필요
@@ -76,8 +121,6 @@ void PWM_init(PWM_t *pwm, GPIO_TypeDef *port, int pin, int speed ,int dir, uint3
 	
 	// AF1: TIM1,2		AF2: TIM3~5			AF3: TIM9~11
 	// bit 연산자는 다 되어있다
-	// 일단 타이머 별로 다 AF를 구분해 주는 if문을 정리하자 
-	
 	uint8_t AFx = 0;
 	if ((TIMx == TIM1) || (TIMx == TIM2)) { AFx = 1UL;}
 	else if ((TIMx == TIM3) || (TIMx == TIM4) || (TIMx == TIM5)) { AFx = 2UL; }
@@ -85,8 +128,11 @@ void PWM_init(PWM_t *pwm, GPIO_TypeDef *port, int pin, int speed ,int dir, uint3
 
 	// 각 핀별로 AFR 배열로 들어가는 일반화를 만들자
 	// AFR[0] for pin: 0~7		AFR[1] for pin:8~15
-	port->AFR[pin/8]	 &= ~(0xFUL	<< (4*(pin%8)));			// 4 bit clear AFRx
-	port->AFR[pin/8]	 |= 	AFx 	<< (4*(pin%8));          						
+	// shift 하나 할 때 2^n으로 나누는 것
+	
+	// pin >> 3 == pin / 8
+	port->AFR[pin >> 3]	 &= ~(0xFUL	<< (4*(pin%8)));			// 4 bit clear AFRx
+	port->AFR[pin >> 3]	 |= 	AFx 	<< (4*(pin%8));          						
 
 	
 // 3. Initialize Timer 
@@ -143,8 +189,7 @@ void PWM_init(PWM_t *pwm, GPIO_TypeDef *port, int pin, int speed ,int dir, uint3
 		TIMx->BDTR |= TIM_BDTR_MOE;					// Main output enable (MOE): 0 = Disable, 1 = Enable	
 	}		
 
-	TIMx->CR1 |= TIM_CR1_CEN;
-	// Enable counter
+	TIMx->CR1 |= TIM_CR1_CEN; // Enable counter
 }
 
 
@@ -157,7 +202,7 @@ void PWM_period_ms(PWM_t *pwm, uint32_t msec){
 
 void PWM_period_us(PWM_t *pwm, uint32_t usec){
 	TIM_TypeDef *TIMx = pwm->timer;
-	TIM_period_us(TIMx, usec); 
+	TIM_period_us(TIMx, usec);
 }
 
 
@@ -189,6 +234,36 @@ void PWM_pulsewidth_ms(PWM_t *pwm, float pulse_width_ms){
 		default: break;
 	}
 }
+
+void PWM_pulsewidth_us(PWM_t *pwm, float pulse_width_us){ 
+	int CHn = pwm->ch;
+	uint32_t fsys = 0;
+	TIM_TypeDef *TIMx = pwm->timer;
+	uint32_t psc = TIMx->PSC;
+	
+	// Check System CLK: PLL or HSI
+	//PLL
+	if((RCC->CFGR & (3<<0)) == 2)      { fsys = 84; }  
+	// HSI
+	else if((RCC->CFGR & (3<<0)) == 0) { fsys = 16; }
+	
+	
+	////////----------------------
+	// 이거 자료형이 안맞는거 같은데?
+	float fclk = fsys / (psc + 1);					// fclk=fsys/(psc+1);
+	uint32_t ccval = pulse_width_us * fclk - 1.0;		// pulse_width_ms *fclk - 1;
+	////////----------------------
+	
+	switch(CHn){
+		case 1: pwm->timer->CCR1 = ccval; break;
+		case 2: pwm->timer->CCR2 = ccval; break;
+		case 3: pwm->timer->CCR3 = ccval; break;
+		case 4: pwm->timer->CCR4 = ccval; break;
+
+		default: break;
+	}
+}
+
 
 
 void PWM_duty(PWM_t *pwm, float duty) {                 //  duty=0 to 1	 한 주기 안에서 duty는 0에서 1사이다

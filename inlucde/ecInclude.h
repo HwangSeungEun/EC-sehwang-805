@@ -13,6 +13,9 @@ Description      : ecInclude header file
 
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
+#include <stdint.h>
+
 
 #include "stm32f4xx.h"
 #include "stm32f411xe.h"
@@ -25,6 +28,9 @@ Description      : ecInclude header file
 #include "ecPWM.h"
 #include "ecStepper.h"
 #include "ecUART.h"
+#include "ecIC.h"
+#include "ecADC.h"
+#include "ecRGBCS.h"
 
 
 #define MCU_CLK_PLL 84000000

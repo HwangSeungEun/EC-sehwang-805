@@ -1,7 +1,6 @@
 /*----------------------------------------------------------------\
 @ Embedded Controller by Young-Keun Kim - Handong Global University
 @ Embedded Controller edit by Seung-Eun Hwang 
-Author           : SSS LAB
 Created          : 05-03-2021
 Modified         : 10-14-2022
 Language/ver     : C++ in Keil uVision
@@ -101,6 +100,7 @@ void GPIO_in_set(GPIO_TypeDef *Port, int pin, int pupd){
 // GPIO output setting
 // set port, pin number, pull up pull down, speed, pushpull
 void GPIO_out_set(GPIO_TypeDef *Port, int pin, int pupd, int speed, int type){	
+	
 	GPIO_init		(Port, pin, OUTPUT);			
 	GPIO_otype		(Port, pin, type);			
 	GPIO_pupd		(Port, pin, pupd);				
@@ -109,12 +109,21 @@ void GPIO_out_set(GPIO_TypeDef *Port, int pin, int pupd, int speed, int type){
 }
 
 
-void GPIO_AF_set(GPIO_TypeDef *Port, int pin, int pupd, int speed, int type){	
+void GPIO_AF_set(GPIO_TypeDef *Port, int pin, int pupd, int speed, int type){
+	
+	
 	GPIO_init		(Port, pin, AF);			
-	GPIO_otype		(Port, pin, type);			
-	GPIO_pupd		(Port, pin, pupd);				
-	GPIO_ospeed		(Port, pin, speed);			
-	GPIO_write		(Port, pin, LOW); 			
+	
+	if(pupd != DEFAULT){
+		GPIO_pupd		(Port, pin, pupd);	
+	}
+	if(speed != DEFAULT){
+		GPIO_ospeed		(Port, pin, speed);			
+	}
+	if(type != DEFAULT){		
+		GPIO_otype		(Port, pin, type);		
+	}		
+	GPIO_write		(Port, pin, LOW); 	
 }
 	 
 

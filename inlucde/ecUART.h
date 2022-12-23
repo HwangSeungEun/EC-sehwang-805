@@ -1,8 +1,8 @@
+#include "ecInclude.h"
+
 #ifndef __EC_USART_H
 #define __EC_USART_H
 
-
-#include "ecInclude.h"
 
 #define POL 0
 #define INT 1
@@ -36,12 +36,12 @@
 
 
 /* Given to Students */ 
-void UART2_init();
+void UART2_init(void);
 void USART_write(USART_TypeDef* USARTx, uint8_t* buffer, uint32_t nBytes);
 void USART_delay(uint32_t us);  
 
 /* Exercise*/
-//void USART_begin(USART_TypeDef* USARTx, GPIO_TypeDef* GPIO_TX, int pinTX, GPIO_TypeDef* GPIO_RX, int pinRX, int baud);
+void USART_begin(USART_TypeDef* USARTx, GPIO_TypeDef* GPIO_TX, int pinTX, GPIO_TypeDef* GPIO_RX, int pinRX, int baud);
 void USART_init(USART_TypeDef* USARTx, int baud);  															// default pins. 
 uint8_t USART_getc(USART_TypeDef * USARTx);			
 uint32_t is_USART_RXNE(USART_TypeDef * USARTx);

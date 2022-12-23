@@ -151,11 +151,11 @@ void TIM_INT_disable(TIM_TypeDef* TIMx){
 
 // update interrupt flag 
 // pending
-uint32_t is_pending_TIM(TIM_TypeDef *TIMx){
+uint32_t is_UIF(TIM_TypeDef *TIMx){
 	return ((TIMx->SR & TIM_SR_UIF) == TIM_SR_UIF);
 }
 
-void clear_pending_TIM(TIM_TypeDef *TIMx){
+void clear_UIF(TIM_TypeDef *TIMx){
 	TIMx->SR &= ~TIM_SR_UIF;
 
 }
@@ -163,3 +163,8 @@ void clear_pending_TIM(TIM_TypeDef *TIMx){
 void reset_TIMER(TIM_TypeDef* TIMx) {
 	TIMx->CNT = 0;
 }
+
+
+
+
+

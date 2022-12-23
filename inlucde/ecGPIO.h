@@ -18,6 +18,8 @@ Description      : Distributed to Students for LAB_GPIO
 #ifndef __ECGPIO_H
 #define __ECGPIO_H
 
+#define DEFAULT 99
+
 // GPIO Mode
 #define INPUT  0x00
 #define OUTPUT 0x01

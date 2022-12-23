@@ -9,12 +9,17 @@ uint32_t step_per_rev = 64*32;
 // Stepper Motor variable
 volatile Stepper_t myStepper; 
 
+
+
+
+
+
+
 //FULL stepping sequence  - FSM
 typedef struct {
 	uint8_t out;
   uint32_t next[2];
 } State_full_t;
-
 	
 State_full_t FSM_full[4] = {  
 //AA'BB'
@@ -33,7 +38,7 @@ typedef struct {
 } State_half_t;
 
 State_half_t FSM_half[8] = { 
-	
+  //AA'BB'
  {0b1000,{S1,S7}},  // s0
  {0b1010,{S2,S0}},	// s1
  {0b0010,{S3,S1}},	// s2
@@ -77,11 +82,11 @@ void Stepper_init(GPIO_TypeDef* port1, int pin1,
 void Stepper_setSpeed (long whatSpeed, int mode){      // rpm
 	
 	if(mode == FULL){
-		step_delay = 	(60000*1000) /  (GEAR_RATIO * FULL_REV * whatSpeed);
+		step_delay = 	(60000*1000) /  (GEAR_RATIO * FULL_REV * whatSpeed); // usec / (2048*rpm)
 	}
 	else if(mode == HALF){
 		
-		step_delay = 	(60000*1000) /  (GEAR_RATIO * HALF_REV * whatSpeed);
+		step_delay = 	(60000*1000) /  (GEAR_RATIO * HALF_REV * whatSpeed); // usec / (4096*rpm)
 	}
 	
 		delay_ms(step_delay);

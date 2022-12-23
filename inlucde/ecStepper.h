@@ -8,6 +8,7 @@ Language/ver     : C++ in Keil uVision
 Description      : HAL library ecStepper
 /----------------------------------------------------------------*/
 #include "ecInclude.h"
+
 #ifndef __EC_STEPPER_H
 #define __EC_STEPPER_H
 

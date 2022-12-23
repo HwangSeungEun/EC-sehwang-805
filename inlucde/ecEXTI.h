@@ -6,10 +6,11 @@
 ******************************************************************************
 */
 
+#include "ecInclude.h"
+
 #ifndef __EC_EXTI_H
 #define __EC_EXTI_H
 
-#include "stm32f411xe.h"
 
 #define FALL 0
 #define RISE 1

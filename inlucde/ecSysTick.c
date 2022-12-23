@@ -89,6 +89,13 @@ void delay_ms (uint32_t nTime){
 	while(TimeDelay != 0);	
 }
 
+void delay_us (uint32_t nTime){
+	
+	TimeDelay = nTime; //setup 
+	while(TimeDelay != 0);	
+}
+
+
 	// SysTick -> VAL에서 VAL이 0이 되면 feedback loop에서 reload 값으로 다시 돌아간다
 	// SysTick을 초기화시키는 방식 -> 다운 클락이기 때문에 가능한 방법이고 
 void SysTick_reset(void)  {

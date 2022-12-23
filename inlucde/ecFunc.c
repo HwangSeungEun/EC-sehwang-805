@@ -56,7 +56,7 @@ void sevensegment_decoder(uint8_t flag) {
 				{LOW,	LOW,	LOW,	LOW,	LOW,	LOW,	LOW,	HIGH},          //eight
 				{LOW,	LOW,	LOW,	HIGH,	HIGH,	LOW,	LOW,	HIGH},          //nine
 				{HIGH,	HIGH,	HIGH,	HIGH,	HIGH,	HIGH,	HIGH,	LOW},			//dot
-				{LOW, LOW, HIGH, HIGH, LOW, LOW, LOW, HIGH}
+				{LOW, LOW, HIGH, HIGH, LOW, LOW, LOW, HIGH}						// pause
 				
 	};
 
@@ -75,20 +75,18 @@ void sevensegment_decoder(uint8_t flag) {
 void LED_4_init(void){
 	
 	// led 0bit setup
-	GPIO_out_set(GPIOA, PA10, NOPUPD, MSPEED, PUSHPULL);
+	GPIO_out_set(GPIOA, PA0, NOPUPD, MSPEED, PUSHPULL);
 	// led 1bit setup
-	GPIO_out_set(GPIOB, PB3, NOPUPD, MSPEED, PUSHPULL);
+	GPIO_out_set(GPIOA, PA1, NOPUPD, MSPEED, PUSHPULL);
   // led 2bit setup
-	GPIO_out_set(GPIOB, PB5, NOPUPD, MSPEED, PUSHPULL);									
+	GPIO_out_set(GPIOB, PB0, NOPUPD, MSPEED, PUSHPULL);									
 	// led 3bit setup
-	GPIO_out_set(GPIOB, PB4, NOPUPD, MSPEED, PUSHPULL);
+	GPIO_out_set(GPIOC, PC1, NOPUPD, MSPEED, PUSHPULL);
 	
 	uint8_t flag_init = 0;
 	
 	LED_4_decoder(flag_init);
-
 }
-
 
 void LED_4_decoder(uint8_t flag){
 	
@@ -112,12 +110,51 @@ void LED_4_decoder(uint8_t flag){
 		{1,1,1,1}			// 15			
 	};
 	
-	GPIO_write(GPIOA, PA10, led4[flag][0]); 		// a
-	GPIO_write(GPIOB, PB3, led4[flag][1]); 		// b
-	GPIO_write(GPIOB, PB5, led4[flag][2]); 		// c
-	GPIO_write(GPIOB, PB4, led4[flag][3]); 		// d
+	GPIO_write(GPIOA, PA0, led4[flag][0]); 		// a
+	GPIO_write(GPIOA, PA1, led4[flag][1]); 		// b
+	GPIO_write(GPIOB, PB0, led4[flag][2]); 		// c
+	GPIO_write(GPIOC, PC1, led4[flag][3]); 		// d
 	
 }
+
+void LED_3_init(void){
+	
+	// led 0bit setup
+	GPIO_out_set(GPIOA, PA0, NOPUPD, MSPEED, PUSHPULL);
+	// led 1bit setup
+	GPIO_out_set(GPIOA, PA1, NOPUPD, MSPEED, PUSHPULL);
+  // led 2bit setup
+	GPIO_out_set(GPIOB, PB0, NOPUPD, MSPEED, PUSHPULL);									
+	
+	uint8_t flag_init = 0;
+	
+	LED_3_decoder(flag_init);
+}
+
+void LED_3_decoder(uint8_t flag){
+	
+	int led3[8][3] = { 
+		
+		{0,0,0},		// 0
+		{0,0,1},		// 1
+		{0,1,0},		// 2
+		{0,1,1},		// 3
+		{1,0,0},		// 4
+		{1,0,1},		// 5
+		{1,1,0},		// 6
+		{1,1,1},		// 7		
+	};
+	
+	GPIO_write(GPIOA, PA0, led3[flag][0]); 		// a
+	GPIO_write(GPIOA, PA1, led3[flag][1]); 		// b
+	GPIO_write(GPIOB, PB0, led3[flag][2]); 		// c
+	
+}
+
+
+
+
+
 
 
 
